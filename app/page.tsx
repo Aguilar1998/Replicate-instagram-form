@@ -56,8 +56,8 @@ export default function UserForm() {
   return (
     <Formik
       initialValues={{
-        username: 'Name',
-        password: 'Password',
+        username: '',
+        password: '',
       }}
       validationSchema={UserSchema}
       onSubmit={handleSubmit}
@@ -76,7 +76,7 @@ export default function UserForm() {
                   <Field
                     type="text"
                     name="username"
-                    placeholder="User name"
+                    placeholder="Phone number, username, or email"
                     className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <ErrorMessage
@@ -84,7 +84,6 @@ export default function UserForm() {
                     component="input"
                     className="text-red-500 text-sm mt-1"
                   />
-                  <span>Phone number, username, or email</span>
                 </label>
                 <label>
                   <Field
@@ -98,10 +97,9 @@ export default function UserForm() {
                     component="input"
                     className="text-red-500 text-sm mt-1"
                   />
-                  <span>Job</span>
                 </label>
               </div>
-              <button type="submit" onClick={isSubmitting}>Log In</button>
+              <button type="submit" onSubmit={isSubmitting}>Log In</button>
             </form>
             <div className="content__or-text">
               <span></span>
