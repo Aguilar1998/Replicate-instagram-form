@@ -25,7 +25,7 @@ export default function UserForm() {
         },
         body: JSON.stringify({
           name: values.username,
-          job: values.password,
+          Password: values.password,
         }),
       });
       const result = await response.json();
@@ -57,7 +57,7 @@ export default function UserForm() {
     <Formik
       initialValues={{
         username: 'Name',
-        password: 'Job',
+        password: 'Password',
       }}
       validationSchema={UserSchema}
       onSubmit={handleSubmit}
@@ -101,7 +101,7 @@ export default function UserForm() {
                   <span>Job</span>
                 </label>
               </div>
-              <button onClick={isSubmitting}>Log In</button>
+              <button type="submit" onClick={isSubmitting}>Log In</button>
             </form>
             <div className="content__or-text">
               <span></span>
