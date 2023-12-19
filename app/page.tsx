@@ -39,7 +39,7 @@ export default function UserForm() {
       // Show SweetAlert2 to the user with their name
       Swal.fire({
         title: 'Registro Exitoso',
-        text: `Bienvenido, ${result.Name}!`,
+        text: `Bienvenido, ${result.username}!`,
         icon: 'success',
         confirmButtonText: 'Grasp',
       });
