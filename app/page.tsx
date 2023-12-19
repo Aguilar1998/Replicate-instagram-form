@@ -3,6 +3,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
+import React, { useState, useEffect } from 'react';
 
 // Esquema de validación
 const UserSchema = Yup.object().shape({
@@ -16,6 +17,9 @@ const UserSchema = Yup.object().shape({
 });
 
 export default function UserForm() {
+
+  const [supportUrl, setSupportUrl] = useState('');
+
   const handleSubmit = async (values, actions) => {
     try {
       const response = await fetch(`https://reqres.in/api/users`, {
@@ -24,17 +28,18 @@ export default function UserForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: values.username,
-          Password: values.password,
+          username: values.username,
+          password: values.password,
         }),
       });
+
       const result = await response.json();
       actions.setSubmitting(false);
 
       // Show SweetAlert2 to the user with their name
       Swal.fire({
         title: 'Registro Exitoso',
-        text: `Bienvenido, ${result.name}!`,
+        text: `Bienvenido, ${result.Name}!`,
         icon: 'success',
         confirmButtonText: 'Grasp',
       });
@@ -53,6 +58,20 @@ export default function UserForm() {
     }
   };
 
+
+  useEffect(() => {
+    const fetchSupportData = async () => {
+      try {
+        const response = await fetch('https://reqres.in/api/users');
+        const data = await response.json();
+        setSupportUrl(data.support.url); // Establecer URL de soporte usando el estado
+      } catch (error) {
+        console.error('Hubo un error al obtener la URL de soporte:', error);
+      }
+    };
+
+    fetchSupportData();
+  }, []);
   return (
     <Formik
       initialValues={{
@@ -70,7 +89,7 @@ export default function UserForm() {
               alt="Instagram"
               className="instagram-logo"
             />
-            <form className="content__form">
+            <section className="content__form">
               <div className="content__inputs">
                 <label>
                   <Field
@@ -81,7 +100,7 @@ export default function UserForm() {
                   />
                   <ErrorMessage
                     name="username"
-                    component="input"
+                    component="span"
                     className="text-red-500 text-sm mt-1"
                   />
                 </label>
@@ -94,13 +113,15 @@ export default function UserForm() {
                   />
                   <ErrorMessage
                     name="password"
-                    component="input"
+                    component="span"
                     className="text-red-500 text-sm mt-1"
                   />
                 </label>
               </div>
-              <button type="submit" onSubmit={isSubmitting}>Log In</button>
-            </form>
+              <button type="submit" disabled={isSubmitting}>
+                Log In
+              </button>
+            </section>
             <div className="content__or-text">
               <span></span>
               <span>OR</span>
@@ -130,7 +151,7 @@ export default function UserForm() {
                 </span>
                 <span>Log in with Facebook</span>
               </a>
-              <a href="#">Forgot password?</a>
+              <a target='_blank' href={supportUrl}>Forgot password?</a>
             </div>
           </div>
         </Form>
